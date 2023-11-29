@@ -1,4 +1,4 @@
-# SOPA_DE_LETRAS_FINAL
+# SOPA DE LETRAS MORATERA
 
 Importar librerías:
 - **Numpy**: Para trabajar con matrices, numpy genera una comprensión de listas y la resume en funciones
