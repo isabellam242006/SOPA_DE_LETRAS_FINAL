@@ -297,8 +297,8 @@ def JugarSopadeLetras():
             if not palabras_validas:
                 continue
 
-            valor = Palabras[categoria_elegida]
-            Palabras_ingresadas = random.sample(valor, cantidad)
+            valor = Palabras[categoria_elegida]                   #Accede a la lista de palabras asociadas a la categoría
+            Palabras_ingresadas = random.sample(valor, cantidad)  #Escoge palabras aleatorias según la cantidad que corresponde a la matriz escogida
 
             categoria_seleccionada = categoria_elegida
             break  # Sale del bucle si la categoría es válida
