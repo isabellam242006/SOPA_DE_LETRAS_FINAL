@@ -110,6 +110,14 @@ def RellenarLetras(palabras, filas, columnas):
     LetrasAzar(matriz)
     return matriz
 ```
+La siguiente función verifica si las coordenadas ingresadas por el usuario corresponden a una palabra:
+
+**Palabras en vertical**: Verifica que las coordenadas x1 y x2 sean iguales. Si esto es así recorre el rango de coordenadas en y concatena las letras que encuentre allí.
+
+**Palabras en horizontal**: Verifica que las coordenadas y1 y y2 sean iguales. Si esto es así recorre el rango de coordenadas en x concatena las letras que encuentre allí.
+
+**Palabras en diagonal**: Evalúa los casos anteriores combinados
+
 ```python
 def IngresarCoordenadas(matriz, coordenadaA, coordenadaB):
     
@@ -123,7 +131,7 @@ def IngresarCoordenadas(matriz, coordenadaA, coordenadaB):
 
     palabra = ""
 
-    # Para palabras en horizontal
+    # Para palabras en vertical
     if x1 == x2:
         if y1 < y2:
             for j in range(y1, y2 + 1):
@@ -133,7 +141,7 @@ def IngresarCoordenadas(matriz, coordenadaA, coordenadaB):
                 palabra += matriz[x1][j]
         return palabra
 
-    # Para palabras en vertical
+    # Para palabras en horizontal
     if y1 == y2:
         if x1 < x2:
             for i in range(x1, x2 + 1):
@@ -203,6 +211,9 @@ def JugarSopadeLetras():
     else:
         print("Por favor seleccione una dificultad valida.")
 ```
+**A tener en cuenta**:
+
+La lista Palabras_ingresadas almacena tanto las palabras que ingresa el usuario como las palabras que se tiene guardadas el diccionario según sea el caso
 ```python
    Palabras_ingresadas = []
     Tipo_palabras = input("¿Quiere ingresar usted las palabras? S/N: ")
@@ -219,10 +230,10 @@ def JugarSopadeLetras():
 
     if Tipo_palabras == "s" or Tipo_palabras == 'S':
         
-        while len(Palabras_ingresadas) < cantidad:
+        while len(Palabras_ingresadas) < cantidad:       #Mientras el número de elementos en la lista sea menor a la cantidad de palabras que se requieren según el tamaño de la matriz, se imprime el siguiente mensaje:
             palabras = input("Ingrese una palabra: ")
-            if palabras.isalpha():
-                if len(palabras) < filas:
+            if palabras.isalpha():                       #isalpha evalúa que solo sean letras
+                if len(palabras) < filas:                #Evalúa que el número de letras en la palabra quepa en la matriz
                     Palabras_ingresadas.append(palabras.upper())
                 else:
                     print(f"Su palabra excede el límite, por favor, que tenga menos de {filas} letras")
@@ -317,8 +328,8 @@ def JugarSopadeLetras():
             if not palabras_validas:
                 continue
 
-            valor = Palabras[categoria_elegida]
-            Palabras_ingresadas = random.sample(valor, cantidad)
+            valor = Palabras[categoria_elegida]                   #Accede a la lista de palabras asociadas a la categoría
+            Palabras_ingresadas = random.sample(valor, cantidad)  #Escoge palabras aleatorias según la cantidad que corresponde a la matriz escogida
             print()
             print("Todas las palabras están en singular")
             print()
@@ -336,11 +347,25 @@ def JugarSopadeLetras():
     #Según el rango (Es decir el tamaño de la matriz), se añaden los números en las filas y columnas, simulando las coordenadas
     col_names = [str(i) for i in range(resultado_sopa.shape[1])]
 
-    #Usando la biblioteca de pandas, se usa la función dataframe para mostrar la sopa de letras mucho más bonita
+    #Usando la biblioteca de pandas, se usa la función dataframe para mostrar la sopa de letras mucho más bonita, sin comas, ni corchetes, y con las coordenadas asignadas
     df = pd.DataFrame(resultado_sopa, columns=col_names)
 
     print(df)   #Imprime la matriz resultante
 ```
+**Cosas a tener en cuenta**:
+
+- Intento_palabra llama a la función de ingresar coordenadas, en este punto se evalúa si la palabra que se concatenó en dicha función hace parte de la lista Palabras_ingresadas
+
+- El .remove quita la palabra de la lista una vez se haya evaluado que sí se encontró
+
+- La cantidad de palabras se van restando. El código se va ejecutando siempre y cuando aún haya palabras en la lista. Cuando llegue a cero se imprime el mensaje de que se ha ganado el juego
+
+- Si las coordenadas no fueron las correctas se vuelve a mostrar el mensaje para ingresar las coordenadas y se muestra el mensaje de que no se ha encontrado una palabra. Ésto se logra con el continue.
+
+- Si la palabra fue la correcta se tiene que intento_palabra = True
+
+- Si la palabra fue incorrecta se tiene que intento_palabra = False
+
 ```python
     cantidad_palabras = len(Palabras_ingresadas)
 
@@ -381,6 +406,7 @@ def JugarSopadeLetras():
         else:
             print(f"La palabra {intento_palabra} no hace parte de las palabras por buscar, por favor intente con otra")
 ```
+Ésta última parte del código nos permite llamar la función JugarDeNuevo, la cual le pregunta al usuario si quiere volver a jugar. Si esto es así se llama a la función principal JugarSopadeLetras nuevamente para que el usuario pueda jugar y si no, imprime un mensaje de que se ha acabado el juego.
 ```python
    if JugarDeNuevo():
             JugarSopadeLetras()
